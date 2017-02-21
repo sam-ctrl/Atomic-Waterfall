@@ -1,0 +1,45 @@
+<!doctype html>
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js"></script>
+  <title>Example Request</title>
+</head>
+<body>
+  <div id="body"></div>
+  <script>
+  
+
+
+
+  var request = new XMLHttpRequest();
+
+		request.addEventListener('load', function (e) {
+		  
+		  JSON.parse(this.responseText).data.forEach(function (data) {
+
+		  	var data = data;
+
+		  	console.log(data);
+
+			var title = data.attributes.summary_title,
+			minDate = data.attributes.lifecycle.creation[0].date[0].earliest,
+			maxDate = data.attributes.lifecycle.creation[0].date[0].latest,
+			imgUrl = "http://smgco-images.s3.amazonaws.com/media/" + data.attributes.multimedia[0].processed.large.location,
+			imgThumb = data.attributes.multimedia[0].processed.large_thumbnail.location;
+
+
+		  });
+
+		});
+
+		// Get 1 random object on display in the Science Museum
+		request.open('GET', 'http://collection.sciencemuseum.org.uk/search/objects?filter%5Bhas_image%5D=true&filter%5Bmuseum%5D=Science%20Museum&page%5Bsize%5D=50&page%5Btype%5D=search&random=1');
+
+		request.setRequestHeader('accept', 'application/json');
+
+		request.send();
+
+//		console.log(request);
+  
+  
+  </script>
+</body>
