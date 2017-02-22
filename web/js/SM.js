@@ -9,7 +9,7 @@ jQuery.noConflict();
 
 window.setInterval(function () {
     queryAPI();
-}, 250);
+}, 100);
 
 function queryAPI() {
     var request = new XMLHttpRequest();
@@ -41,7 +41,8 @@ function generateVis(data) {
         minDate = data.attributes.lifecycle.creation[0].date[0].earliest,
         maxDate = data.attributes.lifecycle.creation[0].date[0].latest,
         imgUrl = "http://smgco-images.s3.amazonaws.com/media/" + data.attributes.multimedia[0].processed.large.location,
-        imgThumb = data.attributes.multimedia[0].processed.large_thumbnail.location;
+        imgThumb = data.attributes.multimedia[0].processed.large_thumbnail.location,
+        objNumb = data.id;
 
     /************************
     	Visualise Images
@@ -50,9 +51,12 @@ function generateVis(data) {
     var dateSpan = maxDate - minDate;
     var averageDate = minDate + (dateSpan * Math.random());
 
-    var images = main.append('svg:image')
+    if (objNumb != "co84660") {
+        var images = main.append('svg:image')
         .attr('xlink:href', imgUrl)
+        .attr('id', title)
         .call(rectDimensions);
+    };
 
     images.transition()
         .duration(function () {
@@ -60,6 +64,7 @@ function generateVis(data) {
         })
         .attr('y', 1500)
         .remove();
+        .attr('y', 1500);
 
     function rectDimensions() {
         this.attr('width', imageWidth)
@@ -77,6 +82,7 @@ var imageWidth = (10 * random) + 100;
 var imageHeight = imageWidth * (321 / 212);
 
 var lowestDate = 10;
+var lowestDate = 1800;
 var highestDate = 2017;
 
 var margin = {
@@ -91,6 +97,7 @@ var margin = {
 ///Scales
 var x = d3.scale.pow().exponent(10)
     //.base([10])
+var x = d3.scale.linear()   
     .domain([lowestDate, highestDate])
     .range([0, width]);
 
@@ -113,6 +120,7 @@ var xAxis = d3.svg.axis()
     .tickFormat(function (d) {
         return x.tickFormat(4, d3.format("d"))(d)
     })
+    .ticks(10)
     .tickSize(6, 0, 0);
 
 function drawxAxis() {
