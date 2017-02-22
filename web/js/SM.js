@@ -7,6 +7,8 @@ Science Museum hackathon
 // Prevents jQuery and D3 clashing
 jQuery.noConflict();
 
+
+
 window.setInterval(function () {
     queryAPI();
 }, 100);
@@ -35,7 +37,7 @@ function queryAPI() {
 
 function generateVis(data) {
 
-    console.log(data);
+    //console.log(data);
 
     var title = data.attributes.summary_title,
         minDate = data.attributes.lifecycle.creation[0].date[0].earliest,
@@ -58,13 +60,12 @@ function generateVis(data) {
         .call(rectDimensions);
     };
 
-    images.transition()
+    images.transition("fall")
         .duration(function () {
             return (10000 + ((highestDate - averageDate) * 50));
         })
         .attr('y', 1500)
         .remove();
-        .attr('y', 1500);
 
     function rectDimensions() {
         this.attr('width', imageWidth)
@@ -77,12 +78,16 @@ function generateVis(data) {
 
 }
 
+// images.on('mouseover', function(d) { 
+//             d3.select(this).transition("fall")
+//             .duration(50)            
+//           })
+
 var random = Math.random();
 var imageWidth = (10 * random) + 100;
 var imageHeight = imageWidth * (321 / 212);
 
 var lowestDate = 10;
-var lowestDate = 1800;
 var highestDate = 2017;
 
 var margin = {
@@ -96,8 +101,6 @@ var margin = {
 
 ///Scales
 var x = d3.scale.pow().exponent(10)
-    //.base([10])
-var x = d3.scale.linear()   
     .domain([lowestDate, highestDate])
     .range([0, width]);
 
