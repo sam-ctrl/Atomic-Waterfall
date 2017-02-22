@@ -11,7 +11,7 @@ jQuery.noConflict();
 
 window.setInterval(function () {
     queryAPI();
-}, 100);
+}, 50);
 
 function queryAPI() {
     var request = new XMLHttpRequest();
@@ -37,7 +37,7 @@ function queryAPI() {
 
 function generateVis(data) {
 
-    //console.log(data);
+    console.log(data);
 
     var title = data.attributes.summary_title,
         minDate = data.attributes.lifecycle.creation[0].date[0].earliest,
@@ -71,7 +71,6 @@ function generateVis(data) {
     function fall(path) {
         d3.select(fallLock).transition()
             .duration(function () {
-
                 return (10000 + ((highestDate - averageDate) * 50));
             })
             .tween("attr:y", function () {
@@ -127,7 +126,7 @@ var margin = {
         bottom: 0,
         left: 50
     },
-    width = 1300,
+    width = 1200,
     height = 5000;
 
 ///Scales
@@ -144,14 +143,14 @@ var chart = d3.select('#visualisationWrapper')
 var axisWrapper = d3.select('#axisDiv')
     .append('svg:svg')
     .attr('width', width + margin.right + margin.left)
-    .attr('height', height + margin.top + margin.bottom)
+    .attr('height', 50)
     .attr('id', 'axisWrapper');
 
 var xaxisWrapperInner = d3.select('#axisWrapper')
     .append('g')
     .attr('transform', 'translate(' + margin.left + ',' + 10 + ')')
     .attr('width', width)
-    .attr('height', height);
+    .attr('height', 50);
 
 var main = d3.select('#chart')
     .append('g')
