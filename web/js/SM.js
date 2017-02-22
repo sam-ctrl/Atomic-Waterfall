@@ -50,21 +50,46 @@ function generateVis(data) {
 
     var dateSpan = maxDate - minDate;
     var averageDate = minDate + (dateSpan * Math.random());
+    var fallLock = {};
+    var fadeLock = {};
 
     if (objNumb != "co84660") {
         var images = main.append('svg:image')
-        .attr('xlink:href', imgUrl)
-        .attr('id', title)
-        .call(rectDimensions);
+            .attr('xlink:href', imgUrl)
+            .attr('id', title)
+            .attr('opacity', 0)
+            .call(rectDimensions);
     };
 
-    images.transition()
-        .duration(function () {
+    images.call(fall).call(fadeIn);
+
+    function fall(path) {
+        d3.select(fallLock).transition()
+            .duration(function () {
             return (10000 + ((highestDate - averageDate) * 50));
         })
-        .attr('y', 1500)
+            .tween("attr:y", function () {
+                var i = d3.interpolateString("-100", "1500");
+                return function (t) {
+                    path.attr("y", i(t));
+                };
+            })
         .remove();
-        .attr('y', 1500);
+    }
+    
+    function fadeIn(path) {
+        d3.select(fadeLock).transition()
+            .delay(3000)
+            .duration(function () {
+            return (2000);
+        })
+            .tween("attr:opacity", function () {
+                var i = d3.interpolateString("0", "0.8");
+                return function (t) {
+                    path.attr("opacity", i(t));
+                };
+            });
+    }
 
     function rectDimensions() {
         this.attr('width', imageWidth)
@@ -72,7 +97,7 @@ function generateVis(data) {
             .attr('x', function () {
                 return x(averageDate);
             })
-            .attr('y', -200);
+            .attr('y', -100);
     }
 
 }
@@ -82,22 +107,19 @@ var imageWidth = (10 * random) + 100;
 var imageHeight = imageWidth * (321 / 212);
 
 var lowestDate = 10;
-var lowestDate = 1800;
 var highestDate = 2017;
 
 var margin = {
-        top: 0,
-        right: 0,
+        top: 10,
+        right: 40,
         bottom: 0,
-        left: 0
+        left: 50
     },
     width = 1300,
     height = 5000;
 
 ///Scales
 var x = d3.scale.pow().exponent(10)
-    //.base([10])
-var x = d3.scale.linear()   
     .domain([lowestDate, highestDate])
     .range([0, width]);
 
@@ -106,6 +128,18 @@ var chart = d3.select('#visualisationWrapper')
     .attr('width', width + margin.right + margin.left)
     .attr('height', height + margin.top + margin.bottom)
     .attr('id', 'chart');
+
+var axisWrapper = d3.select('#axisDiv')
+    .append('svg:svg')
+    .attr('width', width + margin.right + margin.left)
+    .attr('height', height + margin.top + margin.bottom)
+    .attr('id', 'axisWrapper');
+
+var xaxisWrapperInner = d3.select('#axisWrapper')
+    .append('g')
+    .attr('transform', 'translate(' + margin.left + ',' + 10 + ')')
+    .attr('width', width)
+    .attr('height', height);
 
 var main = d3.select('#chart')
     .append('g')
@@ -117,14 +151,12 @@ var main = d3.select('#chart')
 var xAxis = d3.svg.axis()
     .scale(x)
     .orient('bottom')
-    .tickFormat(function (d) {
-        return x.tickFormat(4, d3.format("d"))(d)
-    })
-    .ticks(10)
-    .tickSize(6, 0, 0);
+    .tickValues([1000, 1500, 1700, 1800, 1900, 2000, 2017])
+    .tickFormat(d3.format("d"))
+    .tickSize(10, 0, 0);
 
 function drawxAxis() {
-    main.append('g')
+    xaxisWrapperInner.append('g')
         .attr('class', 'xaxis')
         .attr('transform', "translate(0," + 0 + ")")
         .attr('opacity', 1)
