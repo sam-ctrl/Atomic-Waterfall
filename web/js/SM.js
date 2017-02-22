@@ -58,7 +58,8 @@ function generateVis(data) {
         .duration(function () {
             return (10000 + ((highestDate - averageDate) * 50));
         })
-        .attr('y', 1500);
+        .attr('y', 1500)
+        .remove();
 
     function rectDimensions() {
         this.attr('width', imageWidth)
