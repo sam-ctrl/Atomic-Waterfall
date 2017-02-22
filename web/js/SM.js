@@ -55,6 +55,8 @@ function generateVis(data) {
     var fallLock = {};
     var fadeLock = {};
 
+    var images;
+
     if (objNumb != "co84660") {
         var images = main.append('svg:image')
             .attr('xlink:href', imgUrl)
@@ -63,34 +65,30 @@ function generateVis(data) {
             .call(rectDimensions);
     };
 
-<<<<<<< HEAD
+
     images.call(fall).call(fadeIn);
 
     function fall(path) {
         d3.select(fallLock).transition()
             .duration(function () {
-=======
-    images.transition("fall")
-        .duration(function () {
->>>>>>> origin/master
-            return (10000 + ((highestDate - averageDate) * 50));
-        })
+
+                return (10000 + ((highestDate - averageDate) * 50));
+            })
             .tween("attr:y", function () {
                 var i = d3.interpolateString("-100", "1500");
                 return function (t) {
                     path.attr("y", i(t));
                 };
             })
-        .remove();
-<<<<<<< HEAD
+            .remove();
     }
-    
+
     function fadeIn(path) {
         d3.select(fadeLock).transition()
             .delay(3000)
             .duration(function () {
-            return (2000);
-        })
+                return (2000);
+            })
             .tween("attr:opacity", function () {
                 var i = d3.interpolateString("0", "0.8");
                 return function (t) {
@@ -98,8 +96,6 @@ function generateVis(data) {
                 };
             });
     }
-=======
->>>>>>> origin/master
 
     function rectDimensions() {
         this.attr('width', imageWidth)
@@ -109,8 +105,9 @@ function generateVis(data) {
             })
             .attr('y', -100);
     }
-
 }
+
+
 
 // images.on('mouseover', function(d) { 
 //             d3.select(this).transition("fall")
