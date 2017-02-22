@@ -7,6 +7,8 @@ Science Museum hackathon
 // Prevents jQuery and D3 clashing
 jQuery.noConflict();
 
+
+
 window.setInterval(function () {
     queryAPI();
 }, 100);
@@ -35,7 +37,7 @@ function queryAPI() {
 
 function generateVis(data) {
 
-    console.log(data);
+    //console.log(data);
 
     var title = data.attributes.summary_title,
         minDate = data.attributes.lifecycle.creation[0].date[0].earliest,
@@ -61,11 +63,16 @@ function generateVis(data) {
             .call(rectDimensions);
     };
 
+<<<<<<< HEAD
     images.call(fall).call(fadeIn);
 
     function fall(path) {
         d3.select(fallLock).transition()
             .duration(function () {
+=======
+    images.transition("fall")
+        .duration(function () {
+>>>>>>> origin/master
             return (10000 + ((highestDate - averageDate) * 50));
         })
             .tween("attr:y", function () {
@@ -75,6 +82,7 @@ function generateVis(data) {
                 };
             })
         .remove();
+<<<<<<< HEAD
     }
     
     function fadeIn(path) {
@@ -90,6 +98,8 @@ function generateVis(data) {
                 };
             });
     }
+=======
+>>>>>>> origin/master
 
     function rectDimensions() {
         this.attr('width', imageWidth)
@@ -101,6 +111,11 @@ function generateVis(data) {
     }
 
 }
+
+// images.on('mouseover', function(d) { 
+//             d3.select(this).transition("fall")
+//             .duration(50)            
+//           })
 
 var random = Math.random();
 var imageWidth = (10 * random) + 100;
