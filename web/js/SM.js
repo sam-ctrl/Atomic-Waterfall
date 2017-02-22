@@ -9,7 +9,7 @@ jQuery.noConflict();
 
 window.setInterval(function () {
     queryAPI();
-}, 150);
+}, 250);
 
 function queryAPI() {
     var request = new XMLHttpRequest();
@@ -88,8 +88,8 @@ var margin = {
     height = 5000;
 
 ///Scales
-var x = d3.scale.log()   
-    .base([10])
+var x = d3.scale.pow().exponent(10)
+    //.base([10])
     .domain([lowestDate, highestDate])
     .range([0, width]);
 
